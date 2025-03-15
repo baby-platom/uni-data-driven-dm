@@ -1,5 +1,7 @@
 """Analysis data transfer objects."""
 
+from typing import Any
+
 from app.dtos import CustomBaseModel
 
 
@@ -28,3 +30,11 @@ class ClusteringStats(CustomBaseModel):
     global_clustering: float
     average_clustering: float
     density: float
+
+
+class CentralityStats(CustomBaseModel):
+    eigenvector: dict[Any, float]
+    pagerank: dict[Any, float]
+    katz: dict[Any, float]
+    closeness: dict[Any, float]
+    betweenness: dict[Any, float]

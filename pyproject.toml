@@ -9,6 +9,7 @@ dependencies = [
     "numpy>=2.2.3",
     "pydantic>=2.10.6",
     "pydantic-settings>=2.8.1",
+    "scipy>=1.15.2",
     "seaborn>=0.13.2",
     "structlog>=25.2.0",
 ]
