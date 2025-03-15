@@ -24,7 +24,9 @@ def configure_logs(
     handlers = (logging.StreamHandler(),)
     processors = (structlog.dev.ConsoleRenderer(),)
     if logs_file_path is not None:
-        handlers = (logging.handlers.FileHandler(logs_file_path),)
+        logs_file_path.parent.mkdir(exist_ok=True)
+
+        handlers = (logging.FileHandler(logs_file_path),)
         processors = (structlog.processors.KeyValueRenderer(key_order=("event",)),)
 
     logging.basicConfig(

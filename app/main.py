@@ -9,7 +9,7 @@ from app.analysis.degree import (
     visualize_degrees_distribution,
 )
 from app.configs import get_configs
-from app.logs import configure_logs
+from app.logs import configure_file_logger
 
 
 def main() -> None:
@@ -27,5 +27,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    configure_logs()
+    configure_file_logger()
     main()
