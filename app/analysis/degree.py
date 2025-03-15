@@ -4,6 +4,7 @@ import numpy as np
 import seaborn as sns
 
 from app.analysis.dtos import DegreeStats
+from app.utils import process_plot
 
 
 def get_degrees_distribution(graph: nx.Graph) -> dict[int, int]:
@@ -19,11 +20,13 @@ def visualize_degrees_distribution(degree_distribution: dict[int, int]) -> None:
         x=degree_distribution.keys(),
         y=degree_distribution.values(),
     )
-    ax.set_title("Degree Distribution")
+
+    title = "Degree Distribution"
+    ax.set_title(title)
     ax.set_xlabel("Degree")
     ax.set_ylabel("Frequency")
 
-    plt.show()
+    process_plot(file_title=title)
 
 
 def calculate_degree_stats(

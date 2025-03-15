@@ -13,6 +13,7 @@ class Configs(BaseSettings):
 
     DATA_SET: SupportedDataSets = SupportedDataSets.KARATE
     SEABORD_STYLE: str = "darkgrid"
+    SAVE_PLOTS_TO_FILES: bool = False
     ANALYSIS_N_DECIMAL_PLACES: int = 4
 
     model_config = SettingsConfigDict(
