@@ -6,6 +6,7 @@ import networkx as nx
 
 class SupportedDataSets(Enum):
     KARATE = "KARATE", nx.karate_club_graph
+    LES_MISERABLES = "LES_MISERABLES", nx.les_miserables_graph
 
     def __init__(
         self,

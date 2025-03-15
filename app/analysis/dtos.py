@@ -1,24 +1,18 @@
 """Analysis data transfer objects."""
 
-from typing import Any
-
-from pydantic import BaseModel, model_validator
-
-from app.configs import get_configs
+from app.dtos import CustomBaseModel
 
 
-class DegreeStats(BaseModel):
+class DegreeStats(CustomBaseModel):
     mean: float
     variance: float
     skewness: float
     kurtosis: float
 
-    @model_validator(mode="before")
-    @classmethod
-    def round_floats(cls, data: dict[str, Any]) -> dict[str, Any]:
-        configs = get_configs()
 
-        for field, value in data.items():
-            if isinstance(value, float):
-                data[field] = round(value, configs.ANALYSIS_N_DECIMAL_PLACES)
-        return data
+class ConnectedComponentsStats(CustomBaseModel):
+    n_components: int
+    component_sizes: tuple[int]
+    largest_component_size: int
+    average_size: float
+    std_size: float
