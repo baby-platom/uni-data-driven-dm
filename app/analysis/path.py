@@ -72,7 +72,6 @@ def _visualize_path_length_distribution(
         data,
         bins=bins,
         discrete=True,
-        kde=False,
     )
 
     title = "Shortest Path Length Distribution"

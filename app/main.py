@@ -3,6 +3,7 @@
 import seaborn as sns
 
 from app.analysis import (
+    calculate_clustering_and_density_analysis,
     calculate_connected_components_analysis,
     calculate_degree_distribution_analysis,
     calculate_path_analysis,
@@ -20,6 +21,7 @@ def main() -> None:
     calculate_degree_distribution_analysis(graph)
     calculate_connected_components_analysis(graph)
     calculate_path_analysis(graph)
+    calculate_clustering_and_density_analysis(graph)
 
 
 if __name__ == "__main__":

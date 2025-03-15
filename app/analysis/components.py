@@ -8,11 +8,11 @@ from app.analysis.dtos import ConnectedComponentsStats
 def calculate_connected_components_analysis(graph: nx.Graph) -> None:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
-    analysis_to = connected_components_analysis(graph)
+    analysis_to = _connected_components_analysis(graph)
     logger.info("Connected components analysis", **analysis_to.model_dump())
 
 
-def connected_components_analysis(graph: nx.Graph) -> ConnectedComponentsStats:
+def _connected_components_analysis(graph: nx.Graph) -> ConnectedComponentsStats:
     """Analyze the connected components of an undirected graph."""
 
     components: list[set] = list(nx.connected_components(graph))

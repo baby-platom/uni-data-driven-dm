@@ -22,3 +22,9 @@ class PathStats(CustomBaseModel):
     average_shortest_path_length: float
     diameter: int
     path_length_distribution: dict[int, int]
+
+
+class ClusteringStats(CustomBaseModel):
+    global_clustering: float
+    average_clustering: float
+    density: float
