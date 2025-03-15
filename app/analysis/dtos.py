@@ -16,3 +16,9 @@ class ConnectedComponentsStats(CustomBaseModel):
     largest_component_size: int
     average_size: float
     std_size: float
+
+
+class PathStats(CustomBaseModel):
+    average_shortest_path_length: float
+    diameter: int
+    path_length_distribution: dict[int, int]

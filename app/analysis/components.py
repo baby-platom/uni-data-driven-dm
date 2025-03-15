@@ -9,7 +9,7 @@ def calculate_connected_components_analysis(graph: nx.Graph) -> None:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
     analysis_to = connected_components_analysis(graph)
-    logger.info("Degree stats", **analysis_to.model_dump())
+    logger.info("Connected components analysis", **analysis_to.model_dump())
 
 
 def connected_components_analysis(graph: nx.Graph) -> ConnectedComponentsStats:

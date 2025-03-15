@@ -5,6 +5,7 @@ import seaborn as sns
 from app.analysis import (
     calculate_connected_components_analysis,
     calculate_degree_distribution_analysis,
+    calculate_path_analysis,
 )
 from app.configs import get_configs
 from app.logs import configure_file_logger
@@ -18,6 +19,7 @@ def main() -> None:
 
     calculate_degree_distribution_analysis(graph)
     calculate_connected_components_analysis(graph)
+    calculate_path_analysis(graph)
 
 
 if __name__ == "__main__":

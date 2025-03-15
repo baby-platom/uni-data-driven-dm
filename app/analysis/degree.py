@@ -15,7 +15,7 @@ def calculate_degree_distribution_analysis(graph: nx.Graph) -> None:
     _visualize_degree_distribution(degrees_distribution)
 
     stats_to = _calculate_degree_stats(degrees_distribution)
-    logger.info("Degree stats", **stats_to.model_dump())
+    logger.info("Degree distribution analysis", **stats_to.model_dump())
 
 
 def _get_degree_distribution(graph: nx.Graph) -> dict[int, int]:
