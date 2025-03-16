@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
@@ -7,9 +9,12 @@ from app.analysis.dtos import CentralityStats
 from app.utils import process_plot
 
 
-def calculate_centrality_analysis(graph: nx.Graph) -> None:
+def calculate_centrality_analysis(
+    graph: nx.Graph,
+    graph_name: str | None = None,
+) -> None:
     analysis_to = _calculate(graph)
-    _visualize_centrality_distributions(analysis_to)
+    _visualize_centrality_distributions(analysis_to, graph_name)
 
 
 def _calculate(graph: nx.Graph) -> CentralityStats:
@@ -28,7 +33,10 @@ def _calculate(graph: nx.Graph) -> CentralityStats:
     )
 
 
-def _visualize_centrality_distributions(centralities_to: CentralityStats) -> None:
+def _visualize_centrality_distributions(
+    centralities_to: CentralityStats,
+    graph_name: str | None = None,
+) -> None:
     centralities = centralities_to.model_dump()
     num_measures = len(centralities)
 
@@ -43,4 +51,8 @@ def _visualize_centrality_distributions(centralities_to: CentralityStats) -> Non
         ax.set_ylabel("Frequency")
 
     plt.tight_layout()
-    process_plot(file_title="Centrality Analysis")
+
+    file_path = Path("Centrality Analysis.png")
+    if graph_name is not None:
+        file_path = Path(graph_name) / file_path
+    process_plot(file_path=file_path)

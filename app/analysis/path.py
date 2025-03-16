@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import networkx as nx
 import numpy as np
 import seaborn as sns
@@ -7,25 +9,31 @@ from app.analysis.dtos import PathStats
 from app.utils import process_plot
 
 
-def calculate_path_analysis(graph: nx.Graph) -> None:
+def calculate_path_analysis(graph: nx.Graph, graph_name: str | None = None) -> None:
     if nx.is_connected(graph):
-        _calculate_path_analysis(graph)
+        _calculate_path_analysis(graph, graph_name)
         return
 
     for component_num, component in enumerate(nx.connected_components(graph)):
-        _calculate_path_analysis(component, component_num)
+        _calculate_path_analysis(component, graph_name, component_num)
 
 
-def _calculate_path_analysis(graph: nx.Graph, component_num: int | None = None) -> None:
+def _calculate_path_analysis(
+    graph: nx.Graph,
+    graph_name: str | None = None,
+    component_num: int | None = None,
+) -> None:
     analysis_to = _analyze_component(graph)
     _visualize_path_length_distribution(
         analysis_to.path_length_distribution,
+        graph_name,
         component_num,
     )
 
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
     logger.info(
         "Path analysis",
+        graph_name=graph_name,
         component_num=component_num,
         average_shortest_path_length=analysis_to.average_shortest_path_length,
         diameter=analysis_to.diameter,
@@ -62,6 +70,7 @@ def _analyze_component(graph: nx.Graph) -> PathStats:
 
 def _visualize_path_length_distribution(
     distribution: dict[int, int],
+    graph_name: str | None = None,
     component_num: int | None = None,
 ) -> None:
     unique_values = set(distribution.keys())
@@ -82,4 +91,7 @@ def _visualize_path_length_distribution(
     ax.set_xlabel("Path Length")
     ax.set_ylabel("Count")
 
-    process_plot(file_title=title)
+    file_path = Path(f"{title}.png")
+    if graph_name is not None:
+        file_path = Path(graph_name) / file_path
+    process_plot(file_path=file_path)

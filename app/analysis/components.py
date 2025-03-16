@@ -5,11 +5,18 @@ import structlog
 from app.analysis.dtos import ConnectedComponentsStats
 
 
-def calculate_connected_components_analysis(graph: nx.Graph) -> None:
+def calculate_connected_components_analysis(
+    graph: nx.Graph,
+    graph_name: str | None = None,
+) -> None:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
     analysis_to = _connected_components_analysis(graph)
-    logger.info("Connected components analysis", **analysis_to.model_dump())
+    logger.info(
+        "Connected components analysis",
+        graph_name=graph_name,
+        **analysis_to.model_dump(),
+    )
 
 
 def _connected_components_analysis(graph: nx.Graph) -> ConnectedComponentsStats:

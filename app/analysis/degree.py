@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
@@ -8,14 +10,21 @@ from app.analysis.dtos import DegreeStats
 from app.utils import process_plot
 
 
-def calculate_degree_distribution_analysis(graph: nx.Graph) -> None:
+def calculate_degree_distribution_analysis(
+    graph: nx.Graph,
+    graph_name: str | None = None,
+) -> None:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
     degrees_distribution = _get_degree_distribution(graph)
-    _visualize_degree_distribution(degrees_distribution)
+    _visualize_degree_distribution(degrees_distribution, graph_name)
 
     stats_to = _calculate_degree_stats(degrees_distribution)
-    logger.info("Degree distribution analysis", **stats_to.model_dump())
+    logger.info(
+        "Degree distribution analysis",
+        graph_name=graph_name,
+        **stats_to.model_dump(),
+    )
 
 
 def _get_degree_distribution(graph: nx.Graph) -> dict[int, int]:
@@ -24,7 +33,10 @@ def _get_degree_distribution(graph: nx.Graph) -> dict[int, int]:
     return {degree: int(count) for degree, count in enumerate(bincount) if count > 0}
 
 
-def _visualize_degree_distribution(degree_distribution: dict[int, int]) -> None:
+def _visualize_degree_distribution(
+    degree_distribution: dict[int, int],
+    graph_name: str | None = None,
+) -> None:
     plt.figure(figsize=(8, 5))
 
     ax = sns.barplot(
@@ -37,7 +49,11 @@ def _visualize_degree_distribution(degree_distribution: dict[int, int]) -> None:
     ax.set_xlabel("Degree")
     ax.set_ylabel("Frequency")
 
-    process_plot(file_title=title)
+    file_path = Path(f"{title}.png")
+    if graph_name is not None:
+        file_path = Path(graph_name) / file_path
+
+    process_plot(file_path=file_path)
 
 
 def _calculate_degree_stats(
