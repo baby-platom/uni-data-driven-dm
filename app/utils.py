@@ -1,10 +1,11 @@
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import networkx as nx
 import structlog
 
 from app.configs import get_configs
-from app.constants import saved_plots_directory
+from app.constants import SEED_VALUE, saved_plots_directory
 
 config = get_configs()
 
@@ -36,3 +37,19 @@ def process_plot(
         file_name=str(file_name),
         plots_direcotry=str(saved_plots_directory),
     )
+
+
+def visualize_graph(graph: nx.Graph) -> None:
+    plt.figure(figsize=(10, 8))
+    plt.axis("off")
+
+    pos = nx.spring_layout(graph, seed=SEED_VALUE)
+
+    nx.draw_networkx_nodes(graph, pos, node_color="skyblue", node_size=500, alpha=0.8)
+    nx.draw_networkx_edges(graph, pos, edge_color="gray", alpha=0.5)
+    nx.draw_networkx_labels(graph, pos)
+
+    title = "Graph Visualization"
+    plt.title(title)
+
+    process_plot(file_title=title)

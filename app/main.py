@@ -11,6 +11,7 @@ from app.analysis import (
 )
 from app.configs import get_configs
 from app.logs import configure_file_logger
+from app.utils import visualize_graph
 
 
 def main() -> None:
@@ -18,6 +19,7 @@ def main() -> None:
     sns.set_theme(style=configs.SEABORD_STYLE)
 
     graph = configs.DATA_SET.get_data_set_func()
+    visualize_graph(graph)
 
     calculate_degree_distribution_analysis(graph)
     calculate_connected_components_analysis(graph)
