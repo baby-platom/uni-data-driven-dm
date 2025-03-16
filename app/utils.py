@@ -31,7 +31,7 @@ def process_plot(
 
     current_figure.savefig(file_path)
     plt.close(current_figure)
-    logger.info(
+    logger.debug(
         "Saved plot to file",
         file_path=str(file_path),
     )
