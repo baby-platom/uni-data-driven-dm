@@ -16,7 +16,10 @@ from app.analysis import (
 )
 from app.configs import get_configs
 from app.logs import configure_file_logger
-from app.maximization import get_linear_threshold_top_influential_nodes
+from app.maximization import (
+    get_independent_cascade_top_influential_nodes,
+    get_linear_threshold_top_influential_nodes,
+)
 from app.utils import visualize_graph
 
 
@@ -53,6 +56,12 @@ def main(n_top_influencial_nodes: int) -> None:
         n_top_influencial_nodes,
     )
     print(lt_top_influencial_nodes)
+
+    ic_top_influencial_nodes = get_independent_cascade_top_influential_nodes(
+        graph,
+        n_top_influencial_nodes,
+    )
+    print(ic_top_influencial_nodes)
     return
 
     calculate_basic_analysis(graph)
