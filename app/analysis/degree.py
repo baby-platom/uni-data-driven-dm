@@ -13,11 +13,13 @@ from app.visualize import process_plot
 def calculate_degree_distribution_analysis(
     graph: nx.Graph,
     graph_name: str | None = None,
-) -> None:
+) -> Path:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
     degrees_distribution = _get_degree_distribution(graph)
-    _visualize_degree_distribution(degrees_distribution, graph_name)
+    visualize_image_file_path = _visualize_degree_distribution(
+        degrees_distribution, graph_name
+    )
 
     stats_to = _calculate_degree_stats(degrees_distribution)
     logger.info(
@@ -25,6 +27,12 @@ def calculate_degree_distribution_analysis(
         graph_name=graph_name,
         **stats_to.model_dump(),
     )
+
+    logger.info(
+        "Degree Distribution visualization",
+        image_file_path=visualize_image_file_path,
+    )
+    return visualize_image_file_path
 
 
 def _get_degree_distribution(graph: nx.Graph) -> dict[int, int]:
@@ -36,7 +44,7 @@ def _get_degree_distribution(graph: nx.Graph) -> dict[int, int]:
 def _visualize_degree_distribution(
     degree_distribution: dict[int, int],
     graph_name: str | None = None,
-) -> None:
+) -> Path:
     degrees = np.array(list(degree_distribution.keys()))
     frequencies = np.array(list(degree_distribution.values()))
 
@@ -55,7 +63,7 @@ def _visualize_degree_distribution(
     if graph_name is not None:
         file_path = Path(graph_name) / file_path
 
-    process_plot(file_path=file_path)
+    return process_plot(file_path=file_path)
 
 
 def _calculate_degree_stats(

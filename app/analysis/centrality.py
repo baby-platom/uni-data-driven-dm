@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import seaborn as sns
+import structlog
 
 from app.analysis.dtos import CentralityStats
 from app.visualize import process_plot
@@ -12,9 +13,17 @@ from app.visualize import process_plot
 def calculate_centrality_analysis(
     graph: nx.Graph,
     graph_name: str | None = None,
-) -> None:
+) -> Path:
+    logger: structlog.stdlib.BoundLogger = structlog.get_logger()
+
     analysis_to = _calculate(graph)
-    _visualize_centrality_distributions(analysis_to, graph_name)
+    image_file_path = _visualize_centrality_distributions(analysis_to, graph_name)
+
+    logger.info(
+        "Centrality Analysis visualization",
+        image_file_path=image_file_path,
+    )
+    return image_file_path
 
 
 def _calculate(graph: nx.Graph) -> CentralityStats:
@@ -41,7 +50,7 @@ def _calculate(graph: nx.Graph) -> CentralityStats:
 def _visualize_centrality_distributions(
     centralities_to: CentralityStats,
     graph_name: str | None = None,
-) -> None:
+) -> Path:
     centralities = centralities_to.model_dump()
     num_measures = len(centralities)
 
@@ -65,4 +74,5 @@ def _visualize_centrality_distributions(
     file_path = Path("Centrality Analysis.png")
     if graph_name is not None:
         file_path = Path(graph_name) / file_path
-    process_plot(file_path=file_path)
+
+    return process_plot(file_path=file_path)

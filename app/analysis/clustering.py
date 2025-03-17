@@ -12,16 +12,25 @@ from app.visualize import process_plot
 def calculate_clustering_and_density_analysis(
     graph: nx.Graph,
     graph_name: str | None = None,
-) -> None:
+) -> Path:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
-    _visualize_clustering_coefficient_distribution(graph, graph_name)
+    visualization_image_file_path = _visualize_clustering_coefficient_distribution(
+        graph,
+        graph_name,
+    )
     analysis_to = _calculate_analysis(graph)
     logger.info(
         "Clustering and density analysis",
         graph_name=graph_name,
         **analysis_to.model_dump(),
     )
+
+    logger.info(
+        "Distribution of Node Clustering Coefficients",
+        image_file_path=visualization_image_file_path,
+    )
+    return visualization_image_file_path
 
 
 def _calculate_analysis(graph: nx.Graph) -> ClusteringStats:
@@ -39,7 +48,7 @@ def _calculate_analysis(graph: nx.Graph) -> ClusteringStats:
 def _visualize_clustering_coefficient_distribution(
     graph: nx.Graph,
     graph_name: str | None = None,
-) -> None:
+) -> Path:
     clustering_values = list(nx.clustering(graph).values())
     coeff_array = np.array(clustering_values)
     ax = sns.histplot(coeff_array, kde=True)
@@ -53,4 +62,4 @@ def _visualize_clustering_coefficient_distribution(
     if graph_name is not None:
         file_path = Path(graph_name) / file_path
 
-    process_plot(file_path=file_path)
+    return process_plot(file_path=file_path)

@@ -4,8 +4,6 @@ import networkx as nx
 import seaborn as sns
 import structlog
 
-from graphs import create_ba_graph, create_er_graph, create_ws_graph
-
 from app.analysis import (
     calculate_centrality_analysis,
     calculate_clustering_and_density_analysis,
@@ -17,6 +15,7 @@ from app.analysis import (
 )
 from app.configs import get_configs
 from app.constants import saved_plots_directory
+from app.graphs import create_ba_graph, create_er_graph, create_ws_graph
 from app.logs import configure_file_logger
 from app.maximization import (
     get_independent_cascade_top_influential_nodes,

@@ -18,11 +18,11 @@ def process_plot(
     *,
     save_to_file: bool = config.SAVE_PLOTS_TO_FILES,
     file_path: Path | None = None,
-) -> None:
+) -> Path | None:
     """Processes the current matplotlib figure by either showing it or saving."""
     if not save_to_file:
         plt.show()
-        return
+        return None
 
     if file_path is None:
         raise ValueError("`file_path` is not specified")
@@ -39,6 +39,8 @@ def process_plot(
         "Saved plot to file",
         file_path=str(file_path),
     )
+
+    return file_path
 
 
 def get_graph_layout(
@@ -66,7 +68,7 @@ def get_graph_layout(
     return pos
 
 
-def visualize_graph(graph: nx.Graph, graph_name: str) -> None:
+def visualize_graph(graph: nx.Graph, graph_name: str) -> Path | None:
     num_nodes: int = graph.number_of_nodes()
 
     plt.figure(figsize=(70, 60), dpi=150)
@@ -103,4 +105,4 @@ def visualize_graph(graph: nx.Graph, graph_name: str) -> None:
     if graph_name is not None:
         file_path = Path(graph_name) / file_path
 
-    process_plot(file_path=file_path)
+    return process_plot(file_path=file_path)
