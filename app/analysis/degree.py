@@ -7,7 +7,7 @@ import seaborn as sns
 import structlog
 
 from app.analysis.dtos import DegreeStats
-from app.utils import process_plot
+from app.visualize import process_plot
 
 
 def calculate_degree_distribution_analysis(

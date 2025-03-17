@@ -6,7 +6,7 @@ import numpy as np
 import seaborn as sns
 
 from app.analysis.dtos import CentralityStats
-from app.utils import process_plot
+from app.visualize import process_plot
 
 
 def calculate_centrality_analysis(

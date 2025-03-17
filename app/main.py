@@ -23,7 +23,7 @@ from app.maximization import (
     get_linear_threshold_top_influential_nodes,
     visualize_influential_nodes,
 )
-from app.utils import visualize_graph
+from app.visualize import visualize_graph
 
 
 def calculate_basic_analysis(graph: nx.Graph, graph_name: str | None = None) -> None:
@@ -66,9 +66,13 @@ def main(n_top_influencial_nodes: int) -> None:
 
     sns.set_theme(style=configs.SEABORD_STYLE)
 
-    graph = configs.DATA_SET.get_data_set_func()
-    visualize_graph(graph)
+    data_set = configs.DATA_SET
+    graph_name = data_set.data_set_name
 
+    logger.info("Graph in use", name=graph_name)
+    graph = data_set.get_data_set_func()
+
+    visualize_graph(graph, graph_name)
     calculate_basic_analysis(graph)
 
     n_nodes, n_edges = graph.number_of_nodes(), graph.number_of_edges()

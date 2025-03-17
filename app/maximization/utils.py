@@ -6,7 +6,7 @@ import networkx as nx
 from matplotlib import gridspec
 
 from app.constants import SEED_VALUE
-from app.utils import process_plot
+from app.visualize import process_plot
 
 
 def visualize_influential_nodes(

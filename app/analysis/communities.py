@@ -13,7 +13,7 @@ import seaborn as sns
 
 from app.analysis.dtos import CommunitiesInternalEvaluation
 from app.constants import SEED_VALUE
-from app.utils import process_plot
+from app.visualize import process_plot
 
 __draw_networkx = partial(
     nx.draw_networkx,

@@ -6,7 +6,7 @@ import seaborn as sns
 import structlog
 
 from app.analysis.dtos import PathStats
-from app.utils import process_plot
+from app.visualize import process_plot
 
 
 def calculate_path_analysis(graph: nx.Graph, graph_name: str | None = None) -> None:
