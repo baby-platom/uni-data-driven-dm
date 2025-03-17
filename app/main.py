@@ -2,6 +2,7 @@
 
 import networkx as nx
 import seaborn as sns
+import structlog
 
 from graphs import create_ba_graph, create_er_graph, create_ws_graph
 
@@ -15,10 +16,12 @@ from app.analysis import (
     detect_communities_louvain,
 )
 from app.configs import get_configs
+from app.constants import saved_plots_directory
 from app.logs import configure_file_logger
 from app.maximization import (
     get_independent_cascade_top_influential_nodes,
     get_linear_threshold_top_influential_nodes,
+    visualize_influential_nodes,
 )
 from app.utils import visualize_graph
 
@@ -43,26 +46,28 @@ def analize_reference_model_graphs(n_nodes: int, n_edges: int) -> None:
     calculate_basic_analysis(ws_graph, "WS graph")
 
 
-def main(n_top_influencial_nodes: int) -> None:
-    configs = get_configs()
-
-    sns.set_theme(style=configs.SEABORD_STYLE)
-
-    graph = configs.DATA_SET.get_data_set_func()
-    visualize_graph(graph)
-
+def analize_influential_nodes(graph: nx.Graph, n_top_influencial_nodes: int) -> None:
     lt_top_influencial_nodes = get_linear_threshold_top_influential_nodes(
         graph,
         n_top_influencial_nodes,
     )
-    print(lt_top_influencial_nodes)
+    visualize_influential_nodes(graph, lt_top_influencial_nodes, "Linear Threshold")
 
     ic_top_influencial_nodes = get_independent_cascade_top_influential_nodes(
         graph,
         n_top_influencial_nodes,
     )
-    print(ic_top_influencial_nodes)
-    return
+    visualize_influential_nodes(graph, ic_top_influencial_nodes, "Independent Cascade")
+
+
+def main(n_top_influencial_nodes: int) -> None:
+    configs = get_configs()
+    logger: structlog.stdlib.BoundLogger = structlog.get_logger()
+
+    sns.set_theme(style=configs.SEABORD_STYLE)
+
+    graph = configs.DATA_SET.get_data_set_func()
+    visualize_graph(graph)
 
     calculate_basic_analysis(graph)
 
@@ -71,6 +76,12 @@ def main(n_top_influencial_nodes: int) -> None:
 
     detect_communities_louvain(graph)
     detect_communities_girvan_newman(graph)
+
+    analize_influential_nodes(graph, n_top_influencial_nodes)
+    logger.info(
+        "Review the visualized result in the folder",
+        folder_name=saved_plots_directory,
+    )
 
 
 if __name__ == "__main__":
