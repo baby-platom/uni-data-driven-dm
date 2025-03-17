@@ -38,3 +38,10 @@ class CentralityStats(CustomBaseModel):
     katz: dict[Any, float]
     closeness: dict[Any, float]
     betweenness: dict[Any, float]
+
+
+class CommunitiesInternalEvaluation(CustomBaseModel):
+    internal_edge_density: float
+    average_node_degree: float
+    modularity: float
+    conductance: float
