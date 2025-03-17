@@ -20,7 +20,12 @@ def calculate_centrality_analysis(
 def _calculate(graph: nx.Graph) -> CentralityStats:
     eigenvector = nx.eigenvector_centrality(graph)
     pagerank = nx.pagerank(graph)
-    katz = nx.katz_centrality(graph)
+    katz = nx.katz_centrality(
+        graph,
+        alpha=0.005,
+        beta=1,
+        max_iter=5000,
+    )
     closeness = nx.closeness_centrality(graph)
     betweenness = nx.betweenness_centrality(graph)
 
@@ -40,12 +45,17 @@ def _visualize_centrality_distributions(
     centralities = centralities_to.model_dump()
     num_measures = len(centralities)
 
-    _, axs = plt.subplots(num_measures, 1, figsize=(8, 4 * num_measures))
+    _, axs = plt.subplots(num_measures, 1, figsize=(16, 10 * num_measures))
 
     for ax, (measure, values) in zip(axs, centralities.items(), strict=False):
-        data = np.array(list(values.values()))
+        data = np.array(sorted(values.values(), reverse=True))
 
-        sns.histplot(data, kde=True, ax=ax)
+        ranks = np.arange(1, data.size + 1)
+        sns.scatterplot(x=ranks, y=data, ax=ax)
+
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+
         ax.set_title(f"{measure.capitalize()} Centrality Distribution")
         ax.set_xlabel("Centrality Value")
         ax.set_ylabel("Frequency")

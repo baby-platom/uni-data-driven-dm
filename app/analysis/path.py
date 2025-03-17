@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import seaborn as sns
@@ -73,15 +74,13 @@ def _visualize_path_length_distribution(
     graph_name: str | None = None,
     component_num: int | None = None,
 ) -> None:
-    unique_values = set(distribution.keys())
-    bins = np.arange(min(unique_values), max(unique_values) + 2) - 0.5
+    lengths = np.array(list(distribution.keys()))
+    frequencies = np.array(list(distribution.values()))
 
-    data = np.repeat(list(distribution.keys()), list(distribution.values()))
-    ax = sns.histplot(
-        data,
-        bins=bins,
-        discrete=True,
-    )
+    plt.figure(figsize=(16, 10))
+
+    ax = sns.scatterplot(x=lengths, y=frequencies)
+    ax.set_yscale("log")
 
     title = "Shortest Path Length Distribution"
     if component_num is not None:

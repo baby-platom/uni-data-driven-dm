@@ -12,15 +12,13 @@ import numpy as np
 import seaborn as sns
 
 from app.analysis.dtos import CommunitiesInternalEvaluation
-from app.constants import SEED_VALUE
-from app.visualize import process_plot
+from app.constants import LARGE_GRAPH_N_NODES, SEED_VALUE
+from app.visualize import get_graph_layout, process_plot
 
 __draw_networkx = partial(
     nx.draw_networkx,
     with_labels=True,
     edge_color="gray",
-    node_size=500,
-    font_size=10,
 )
 
 
@@ -33,7 +31,7 @@ def detect_communities_louvain(
         seed=SEED_VALUE,
     )
 
-    pos = nx.spring_layout(graph, seed=SEED_VALUE)
+    pos = get_graph_layout(graph, graph_name)
 
     community_index: dict[Any, int] = {}
     for community_id, community in enumerate(communities):
@@ -45,13 +43,22 @@ def detect_communities_louvain(
     palette = sns.color_palette("husl", len(communities))
     node_colors = [palette[community_index[node]] for node in graph.nodes()]
 
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(70, 60), dpi=150)
     plt.axis("off")
+
+    num_nodes = graph.number_of_nodes()
+    node_size: int = 500
+    node_size: int = (
+        int(node_size / np.sqrt(num_nodes / LARGE_GRAPH_N_NODES))
+        if num_nodes > LARGE_GRAPH_N_NODES
+        else node_size
+    )
 
     __draw_networkx(
         graph,
         pos,
         node_color=node_colors,
+        node_size=node_size,
     )
 
     evaluation_text: str = "\n".join(
@@ -61,13 +68,13 @@ def detect_communities_louvain(
         0.75,
         0.5,
         evaluation_text,
-        fontsize=10,
+        fontsize=100,
         bbox={"facecolor": "white", "alpha": 0.7},
         verticalalignment="center",
     )
 
     title = "Communities: Louvain"
-    plt.title(title)
+    plt.title(title, fontsize=100)
 
     file_path = Path(f"{title}.png")
     if graph_name is not None:

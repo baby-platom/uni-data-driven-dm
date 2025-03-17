@@ -43,9 +43,13 @@ def process_plot(
 
 def get_graph_layout(
     graph: nx.Graph,
-    cache_file_path: Path,
+    graph_name: str,
 ) -> dict[Any, Any]:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
+
+    cache_files_dir = Path("data/cache/layout")
+    cache_files_dir.mkdir(parents=True, exist_ok=True)
+    cache_file_path = cache_files_dir / Path(f"{graph_name}_layout.pkl")
 
     if cache_file_path.exists():
         with contextlib.suppress(Exception), cache_file_path.open("rb") as f:
@@ -68,13 +72,9 @@ def visualize_graph(graph: nx.Graph, graph_name: str) -> None:
     plt.figure(figsize=(70, 60), dpi=150)
     plt.axis("off")
 
-    cache_files_dir = Path("data/cache/layout")
-    cache_files_dir.mkdir(parents=True, exist_ok=True)
-    cache_file_path = cache_files_dir / Path(f"{graph_name}_layout.pkl")
-
     pos = get_graph_layout(
         graph,
-        cache_file_path,
+        graph_name,
     )
 
     node_size: int = 500

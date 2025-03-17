@@ -37,12 +37,14 @@ def _visualize_degree_distribution(
     degree_distribution: dict[int, int],
     graph_name: str | None = None,
 ) -> None:
-    plt.figure(figsize=(8, 5))
+    degrees = np.array(list(degree_distribution.keys()))
+    frequencies = np.array(list(degree_distribution.values()))
 
-    ax = sns.barplot(
-        x=degree_distribution.keys(),
-        y=degree_distribution.values(),
-    )
+    plt.figure(figsize=(16, 10))
+
+    ax = sns.scatterplot(x=degrees, y=frequencies)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
 
     title = "Degree Distribution"
     ax.set_title(title)

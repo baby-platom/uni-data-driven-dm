@@ -72,6 +72,9 @@ def main(n_top_influencial_nodes: int) -> None:
     logger.info("Graph in use", name=graph_name)
     graph = data_set.get_data_set_func()
 
+    detect_communities_girvan_newman(graph, graph_name=graph_name)
+    return
+
     visualize_graph(graph, graph_name)
     calculate_basic_analysis(graph)
 
