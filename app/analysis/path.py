@@ -108,8 +108,8 @@ def _visualize_path_length_distribution(
         title = f"{title}: Component {component_num}"
 
     ax.set_title(title)
-    ax.set_xlabel("Path Length")
-    ax.set_ylabel("Count")
+    ax.set_xlabel("Shortest Path Length")
+    ax.set_ylabel("Frequency")
 
     file_path = Path(f"{title}.png")
     if graph_name is not None:

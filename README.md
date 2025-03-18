@@ -25,8 +25,8 @@ git clone https://github.com/baby-platom/uni-data-driven-dm.git
 
 2. Create virtual environment and install the dependencies
 ```sh
-python -m venv myenv
-source myenv/bin/activate
+python -m venv venv
+source venv/bin/activate
 
 pip install -r requirements.txt
 ```
