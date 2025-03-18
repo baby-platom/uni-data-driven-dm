@@ -14,16 +14,18 @@ from app.maximization import (
 )
 
 
-def _get_candidates(graph: nx.Graph) -> set[Any]:
+def _get_candidates(graph: nx.Graph, n_candidates: int = 50) -> set[Any]:
+    top_n = n_candidates // 2
+
     betweenness = nx.betweenness_centrality(graph)
-    top100_betweenness = set(
-        sorted(betweenness, key=betweenness.get, reverse=True)[:50]
+    top_n_betweenness = set(
+        sorted(betweenness, key=betweenness.get, reverse=True)[:top_n]
     )
 
     pagerank = nx.pagerank(graph)
-    top100_pagerank = set(sorted(pagerank, key=pagerank.get, reverse=True)[:50])
+    top_n_pagerank = set(sorted(pagerank, key=pagerank.get, reverse=True)[:top_n])
 
-    return top100_betweenness | top100_pagerank
+    return top_n_betweenness | top_n_pagerank
 
 
 def main(n_top_influencial_nodes: int) -> None:
@@ -38,7 +40,7 @@ def main(n_top_influencial_nodes: int) -> None:
     logger.info("Graph in use", name=graph_name)
     graph = data_set.get_data_set_func()
 
-    candidates = _get_candidates()
+    candidates = _get_candidates(graph)
 
     ic_top_influencial_nodes = get_independent_cascade_top_influential_nodes(
         graph,
@@ -74,7 +76,7 @@ def main(n_top_influencial_nodes: int) -> None:
 
 
 if __name__ == "__main__":
-    logs_file_path = Path("scripts", "logs", "cascade.log")
+    logs_file_path = Path("scripts", "logs", "maximization.log")
     configure_logs(logs_file_path=logs_file_path)
 
     n_top_influencial_nodes = 10

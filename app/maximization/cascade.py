@@ -10,7 +10,7 @@ def get_independent_cascade_top_influential_nodes(
     graph: nx.Graph,
     n_top: int,
     candidates: set[Any],
-    num_simulations: int = 100,
+    num_simulations: int = 50,
     p: float = 0.1,
 ) -> list[Any]:
     """Find `n_top` influential nodes among `candidates` using Independent Cascade.
