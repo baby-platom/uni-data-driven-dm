@@ -16,6 +16,8 @@ The graph (data set) is located in the [data/](data) folder. Note that dutring t
 
 ## Installation
 
+The required Python version is `3.12.7`
+
 1. Clone the repo
 ```sh
 git clone https://github.com/baby-platom/uni-data-driven-dm.git
