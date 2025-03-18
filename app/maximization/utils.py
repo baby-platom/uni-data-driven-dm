@@ -8,7 +8,7 @@ import structlog
 from matplotlib import gridspec
 
 from app.constants import LARGE_GRAPH_N_NODES
-from app.visualize import get_graph_layout, process_plot
+from app.visualize import _get_graph_layout, process_plot
 
 
 def visualize_influential_nodes(
@@ -17,7 +17,7 @@ def visualize_influential_nodes(
     analysis_method: str,
     graph_name: str | None = None,
 ) -> Path:
-    pos = get_graph_layout(graph, graph_name)
+    pos = _get_graph_layout(graph, graph_name)
 
     figure = plt.figure(figsize=(70, 60), dpi=150)
     gs = gridspec.GridSpec(1, 2, width_ratios=[3, 1])

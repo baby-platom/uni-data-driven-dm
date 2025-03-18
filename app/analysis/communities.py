@@ -1,6 +1,5 @@
 import contextlib
 from collections import defaultdict
-from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -11,14 +10,8 @@ import seaborn as sns
 import structlog
 
 from app.analysis.dtos import CommunitiesInternalEvaluation
-from app.constants import LARGE_GRAPH_N_NODES, SEED_VALUE
-from app.visualize import get_graph_layout, process_plot
-
-__draw_networkx = partial(
-    nx.draw_networkx,
-    with_labels=True,
-    edge_color="gray",
-)
+from app.constants import SEED_VALUE
+from app.visualize import process_plot, run_base_graph_visualization
 
 
 def detect_communities_louvain(
@@ -30,8 +23,6 @@ def detect_communities_louvain(
         seed=SEED_VALUE,
     )
 
-    pos = get_graph_layout(graph, graph_name)
-
     community_index: dict[Any, int] = {}
     for community_id, community in enumerate(communities):
         for node in community:
@@ -42,23 +33,7 @@ def detect_communities_louvain(
     palette = sns.color_palette("husl", len(communities))
     node_colors = [palette[community_index[node]] for node in graph.nodes()]
 
-    plt.figure(figsize=(70, 60), dpi=150)
-    plt.axis("off")
-
-    num_nodes = graph.number_of_nodes()
-    node_size: int = 500
-    node_size: int = (
-        int(node_size / np.sqrt(num_nodes / LARGE_GRAPH_N_NODES))
-        if num_nodes > LARGE_GRAPH_N_NODES
-        else node_size
-    )
-
-    __draw_networkx(
-        graph,
-        pos,
-        node_color=node_colors,
-        node_size=node_size,
-    )
+    run_base_graph_visualization(graph, graph_name, node_color=node_colors)
 
     evaluation_text: str = "\n".join(
         f"{key}: {value}" for key, value in internal_evaluation_to.model_dump().items()
@@ -97,8 +72,6 @@ def detect_communities_asyn_lpa(
         nx.algorithms.community.asyn_lpa_communities(graph, seed=SEED_VALUE)
     )
 
-    pos = get_graph_layout(graph, graph_name)
-
     community_index: dict[Any, int] = {}
     for community_id, community in enumerate(communities):
         for node in community:
@@ -109,23 +82,7 @@ def detect_communities_asyn_lpa(
     palette = sns.color_palette("husl", len(communities))
     node_colors = [palette[community_index[node]] for node in graph.nodes()]
 
-    plt.figure(figsize=(70, 60), dpi=150)
-    plt.axis("off")
-
-    num_nodes = graph.number_of_nodes()
-    node_size: int = 500
-    node_size = (
-        int(node_size / np.sqrt(num_nodes / LARGE_GRAPH_N_NODES))
-        if num_nodes > LARGE_GRAPH_N_NODES
-        else node_size
-    )
-
-    __draw_networkx(
-        graph,
-        pos,
-        node_color=node_colors,
-        node_size=node_size,
-    )
+    run_base_graph_visualization(graph, graph_name, node_color=node_colors)
 
     evaluation_text: str = "\n".join(
         f"{key}: {value}" for key, value in internal_evaluation_to.model_dump().items()
