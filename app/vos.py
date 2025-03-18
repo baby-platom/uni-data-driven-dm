@@ -10,7 +10,6 @@ from app.data import import_lastfm_asia_graph
 
 class SupportedDataSets(Enum):
     KARATE = "KARATE", nx.karate_club_graph
-    LES_MISERABLES = "LES_MISERABLES", nx.les_miserables_graph
     LASTFM_ASIA = "LASTFM_ASIA", import_lastfm_asia_graph
 
     def __init__(

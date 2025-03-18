@@ -1,3 +1,5 @@
+"""Application data transfer objects."""
+
 from typing import Any
 
 from pydantic import BaseModel, model_validator

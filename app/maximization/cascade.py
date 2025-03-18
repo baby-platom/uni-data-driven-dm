@@ -13,10 +13,9 @@ def get_independent_cascade_top_influential_nodes(
     num_simulations: int = 100,
     p: float = 0.1,
 ) -> list[Any]:
-    """Find `n_top` influential nodes using the Independent Cascade model.
+    """Find `n_top` influential nodes among `candidates` using Independent Cascade.
 
     Utilizes the Greedy algorithm. The probabilities are fixed to `p`.
-
     """
     np.random.seed(SEED_VALUE)
 

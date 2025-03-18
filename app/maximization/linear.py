@@ -12,7 +12,7 @@ def get_linear_threshold_top_influential_nodes(
     candidates: set[Any],
     num_simulations: int = 100,
 ) -> list[Any]:
-    """Find `n_top` influential nodes using the Linear Threshold algorithm.
+    """Find `n_top` influential nodes among `candidates` using Linear Threshold.
 
     Utilizes the Greedy algorithm. The edges weights and the thresholds are generated
     randomly.
