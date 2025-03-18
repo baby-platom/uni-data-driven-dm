@@ -37,4 +37,4 @@ Optionally:
 
 ## Usage
 
-Review the [scripts/](scripts) folder: every `.py` there is a script that you can run to calculate some metric(s) of a graph. To see the results, look into a corresponding `.log` file in the [scripts/logs/](scripts/logs) folder and if applicable, in the [plots/](plots) folder to review plots and visulizations of calculated statistics.
+Review the [scripts/](scripts) folder: every `.py` file there is a script that you can run to calculate some metric(s) of a graph. To see the results, look into a corresponding `.log` file in the [scripts/logs/](scripts/logs) folder and if applicable, in the [plots/](plots) folder to review plots and visulizations of calculated statistics.
