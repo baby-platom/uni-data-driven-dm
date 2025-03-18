@@ -21,7 +21,9 @@ def calculate_path_analysis(
     else:
         visualization_image_file_paths = []
 
-        for component_num, component in enumerate(nx.connected_components(graph)):
+        for component_num, component_set in enumerate(nx.connected_components(graph)):
+            component = graph.subgraph(component_set).copy()
+
             visualization_image_file_path = _calculate_path_analysis(
                 component,
                 graph_name,

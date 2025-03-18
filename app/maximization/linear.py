@@ -9,6 +9,7 @@ from app.constants import SEED_VALUE
 def get_linear_threshold_top_influential_nodes(
     graph: nx.Graph,
     n_top: int,
+    candidates: set[Any],
     num_simulations: int = 100,
 ) -> list[Any]:
     """Find `n_top` influential nodes using the Linear Threshold algorithm.
@@ -20,9 +21,7 @@ def get_linear_threshold_top_influential_nodes(
     np.random.seed(SEED_VALUE)
 
     weights_mapping = _generate_edge_weights(graph)
-
     selected_seeds: list[Any] = []
-    candidates: set[Any] = set(graph.nodes())
 
     for _ in range(n_top):
         best_candidate = None

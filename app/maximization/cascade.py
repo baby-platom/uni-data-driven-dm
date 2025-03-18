@@ -9,6 +9,7 @@ from app.constants import SEED_VALUE
 def get_independent_cascade_top_influential_nodes(
     graph: nx.Graph,
     n_top: int,
+    candidates: set[Any],
     num_simulations: int = 100,
     p: float = 0.1,
 ) -> list[Any]:
@@ -22,7 +23,6 @@ def get_independent_cascade_top_influential_nodes(
     probabilities_mapping = _generate_edge_probabilities(graph, p)
 
     selected_seeds: list[Any] = []
-    candidates: set[Any] = set(graph.nodes())
 
     for _ in range(n_top):
         best_candidate = None

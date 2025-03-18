@@ -10,11 +10,9 @@ from app.analysis import (
     calculate_connected_components_analysis,
     calculate_degree_distribution_analysis,
     calculate_path_analysis,
-    detect_communities_louvain,
 )
-from app.analysis.communities import detect_communities_louvain
 from app.configs import get_configs
-from app.graphs import create_ba_graph, create_er_graph, create_ws_graph
+from app.graphs import create_er_graph
 from app.logs import configure_logs
 
 
@@ -24,18 +22,6 @@ def calculate_basic_analysis(graph: nx.Graph, graph_name: str | None = None) -> 
     calculate_path_analysis(graph, graph_name)
     calculate_clustering_and_density_analysis(graph, graph_name)
     calculate_centrality_analysis(graph, graph_name)
-
-
-def analize_reference_model_graphs(n_nodes: int, n_edges: int) -> None:
-    er_graph, ba_graph, ws_graph = (
-        create_er_graph(n_nodes, n_edges),
-        create_ba_graph(n_nodes, n_edges),
-        create_ws_graph(n_nodes, n_edges),
-    )
-
-    calculate_basic_analysis(er_graph, "ER graph")
-    calculate_basic_analysis(ba_graph, "BA graph")
-    calculate_basic_analysis(ws_graph, "WS graph")
 
 
 def main() -> None:
@@ -50,15 +36,13 @@ def main() -> None:
     logger.info("Graph in use", name=graph_name)
     graph = data_set.get_data_set_func()
 
-    image_file_path = detect_communities_louvain(graph, graph_name)
-    logger.info(
-        "Communities: Louvain visualization",
-        image_file_path=image_file_path,
-    )
+    n_nodes, n_edges = graph.number_of_nodes(), graph.number_of_edges()
+    er_graph = create_er_graph(n_nodes, n_edges)
+    calculate_basic_analysis(er_graph, "ER graph")
 
 
 if __name__ == "__main__":
-    logs_file_path = Path("scripts", "logs", "louvain.log")
+    logs_file_path = Path("scripts", "logs", "er.log")
     configure_logs(logs_file_path=logs_file_path)
 
     main()

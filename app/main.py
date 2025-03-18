@@ -10,7 +10,6 @@ from app.analysis import (
     calculate_connected_components_analysis,
     calculate_degree_distribution_analysis,
     calculate_path_analysis,
-    detect_communities_girvan_newman,
     detect_communities_louvain,
 )
 from app.configs import get_configs
@@ -71,7 +70,7 @@ def main(n_top_influencial_nodes: int) -> None:
     logger.info("Graph in use", name=graph_name)
     graph = data_set.get_data_set_func()
 
-    detect_communities_girvan_newman(graph, graph_name=graph_name)
+    print(graph.degree(4785))
     return
 
     visualize_graph(graph, graph_name)
@@ -81,7 +80,6 @@ def main(n_top_influencial_nodes: int) -> None:
     analize_reference_model_graphs(n_nodes, n_edges)
 
     detect_communities_louvain(graph)
-    detect_communities_girvan_newman(graph)
 
     analize_influential_nodes(graph, n_top_influencial_nodes)
     logger.info(
