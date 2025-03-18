@@ -34,6 +34,7 @@ pip install -r requirements.txt
 Optionally: 
 - Create the `.env` file based on the [configs](app/configs.py)
 - Use [uv](https://docs.astral.sh/uv/) for dependencies management
+- Use [ruff](https://docs.astral.sh/ruff/) as a linter and code formatter
 
 ## Usage
 

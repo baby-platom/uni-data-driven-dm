@@ -13,7 +13,7 @@ class Configs(BaseSettings):
 
     DATA_SET: SupportedDataSets = SupportedDataSets.LASTFM_ASIA
     SEABORD_STYLE: str = "darkgrid"
-    SAVE_PLOTS_TO_FILES: bool = False
+    SAVE_PLOTS_TO_FILES: bool = True
     ANALYSIS_N_DECIMAL_PLACES: int = 4
 
     model_config = SettingsConfigDict(
