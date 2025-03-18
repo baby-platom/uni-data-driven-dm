@@ -12,7 +12,7 @@ The repository consists of the two major parts:
 1. `app` - Includes the implementation of methods / function used for the analysis of the data set.
 2. `scripts` - Contains all the actual scripts that can be run to analize the graph.
 
-The graph (data set) is located in the [data/](data) folder. Note that dutring the analysis, we consider the networks as an undirected, unweighted, and with no attributes. 
+The graph (data set) is located in the [data/](data) folder. Note that dutring the analysis, we consider the networks as an undirected, unweighted, and with no attributes. The graph has about 8 thousand nodes and 27 thousand edges.
 
 ## Installation
 
