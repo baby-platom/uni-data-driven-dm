@@ -7,23 +7,24 @@ import seaborn as sns
 import structlog
 
 from app.analysis.dtos import CentralityStats
+from app.constants import centrality_plots_folder
 from app.visualize import process_plot
 
 
 def calculate_centrality_analysis(
     graph: nx.Graph,
     graph_name: str | None = None,
-) -> Path:
+) -> list[Path]:
     logger: structlog.stdlib.BoundLogger = structlog.get_logger()
 
     analysis_to = _calculate(graph)
-    image_file_path = _visualize_centrality_distributions(analysis_to, graph_name)
+    image_file_paths = _visualize_centrality_distributions(analysis_to, graph_name)
 
     logger.info(
         "Centrality Analysis visualization",
-        image_file_path=image_file_path,
+        image_file_paths=image_file_paths,
     )
-    return image_file_path
+    return image_file_paths
 
 
 def _calculate(graph: nx.Graph) -> CentralityStats:
@@ -50,17 +51,16 @@ def _calculate(graph: nx.Graph) -> CentralityStats:
 def _visualize_centrality_distributions(
     centralities_to: CentralityStats,
     graph_name: str | None = None,
-) -> Path:
+) -> list[Path]:
     centralities = centralities_to.model_dump()
-    num_measures = len(centralities)
+    image_file_paths: list[Path] = []
 
-    _, axs = plt.subplots(num_measures, 1, figsize=(16, 10 * num_measures))
-
-    for ax, (measure, values) in zip(axs, centralities.items(), strict=False):
+    for measure, values in centralities.items():
         data = np.array(sorted(values.values(), reverse=True))
-
         ranks = np.arange(1, data.size + 1)
-        sns.scatterplot(x=ranks, y=data, ax=ax)
+
+        plt.figure(figsize=(16, 10))
+        ax = sns.scatterplot(x=ranks, y=data)
 
         ax.set_xscale("log")
         ax.set_yscale("log")
@@ -69,10 +69,13 @@ def _visualize_centrality_distributions(
         ax.set_xlabel("Centrality Value")
         ax.set_ylabel("Frequency")
 
-    plt.tight_layout()
+        file_path = centrality_plots_folder / Path(
+            f"{measure.capitalize()} Distribution.png"
+        )
+        if graph_name is not None:
+            file_path = Path(graph_name) / file_path
 
-    file_path = Path("Centrality Analysis.png")
-    if graph_name is not None:
-        file_path = Path(graph_name) / file_path
+        image_file_path = process_plot(file_path=file_path)
+        image_file_paths.append(image_file_path)
 
-    return process_plot(file_path=file_path)
+    return image_file_paths
